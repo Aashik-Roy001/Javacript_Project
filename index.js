@@ -1,10 +1,12 @@
 const express = require("express");
 
-const app = express();
 const path = require("path");
 const port = 8001;
+const app = express();
 const { connectToMongoDB } = require("./connect");
 const URL = require("./model/url");
+const cookieParser = require("cookie-parser");
+const { restrictedToLoginUserOnly } = require("./middleware/auth");
 
 // ==================registering the routes ==================
 
@@ -26,11 +28,12 @@ app.set("views", path.resolve("./view"));
 // =========== usign the middleware =======================
 app.use(express.json()); // for json data
 app.use(express.urlencoded({ extended: false })); // to parse the form data
+app.use(cookieParser); // for parsing the cookie
 // ============== using the routes ========================
 
-app.use("/url", urlRoute);
-app.use("/", staticRoute);
+app.use("/url", restrictedToLoginUserOnly, urlRoute); // restrictToLoginUserOnly will ensure that only logged in user will allowed to user our app
 app.use("/user", userRoute);
+app.use("/", staticRoute);
 
 app.get("/url/:shortId", async (req, res) => {
   const shortId = req.params.shortId;
