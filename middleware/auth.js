@@ -49,3 +49,6 @@ module.exports = {
 // we will use a library i.e "JSONwebtoken"
 
 // Those who will have the "SecretKey" can only chnage the token and can hack the user data and crash your app
+
+// We use Tokens when we need longer session for the user
+// we use SessionId when we shorter session for the user(Like in banking application)
