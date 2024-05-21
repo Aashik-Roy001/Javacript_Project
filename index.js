@@ -4,15 +4,22 @@ const app = express();
 const path = require("path");
 const port = 8001;
 const { connectToMongoDB } = require("./connect");
+const URL = require("./model/url");
+
+// ==================registering the routes ==================
+
 const urlRoute = require("./routes/urlRouter");
 const staticRoute = require("./routes/staticRouter");
-const URL = require("./model/url");
+const userRoute = require("./routes/user");
+
+// ================= connecting with mongoDb ====================
 
 connectToMongoDB("mongodb://127.0.0.1:27017/short-url").then(() => {
   console.log("connected to MongoDB");
 });
 
 // ========== set the view Engine =========================
+
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./view"));
 
@@ -20,8 +27,11 @@ app.set("views", path.resolve("./view"));
 app.use(express.json()); // for json data
 app.use(express.urlencoded({ extended: false })); // to parse the form data
 // ============== using the routes ========================
+
 app.use("/url", urlRoute);
 app.use("/", staticRoute);
+app.use("/user", userRoute);
+
 app.get("/url/:shortId", async (req, res) => {
   const shortId = req.params.shortId;
   const entry = await URL.findOneAndUpdate(

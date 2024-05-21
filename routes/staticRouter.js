@@ -2,9 +2,15 @@ const express = require("express");
 const URL = require("../model/url");
 const router = express.Router();
 
+// =============== these will render the EJS file ========================
+
 router.get("/", async (req, res) => {
   const allUrls = await URL.find({});
   return res.render("home", { urls: allUrls });
+});
+
+router.get("/signup", async (req, res) => {
+  return res.render("signup");
 });
 
 module.exports = router;
