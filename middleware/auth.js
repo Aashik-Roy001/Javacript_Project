@@ -1,7 +1,7 @@
 const { getUser } = require("../Service/auth");
 
 async function restrictedToLoginUserOnly(req, res, next) {
-  const userId = req.cookies.uid; // we also hve to install cookie-parser to parse the cookies
+  const userId = req.cookies?.uid; // we also hve to install cookie-parser to parse the cookies
 
   if (!userId) {
     return res.redirect("/login");
@@ -14,6 +14,14 @@ async function restrictedToLoginUserOnly(req, res, next) {
   next();
 }
 
+async function checkAuth(req, res, next) {
+  const userId = req.cookies?.uid; // we also hve to install cookie-parser to parse the cookies
+  const user = getUser(userId);
+  req.user = user;
+  next();
+}
+
 module.exports = {
   restrictedToLoginUserOnly,
+  checkAuth,
 };
