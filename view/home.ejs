@@ -11,28 +11,26 @@
         background-color: #f5f5f5;
         margin: 0;
         padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
       }
-
+    
       .container {
         text-align: center;
+        margin-top: 20px; /* Add margin to separate the form and the table */
       }
-
+    
       h1 {
         color: #333;
       }
-
+    
       input[type="text"] {
         width: 300px;
         padding: 10px;
-        margin: 10px;
+        margin: 10px auto; /* Center the text field horizontally */
+        display: block; /* Ensure the text field is displayed as a block element */
         border: 1px solid #ccc;
         border-radius: 5px;
       }
-
+    
       button {
         padding: 10px 20px;
         background-color: #007bff;
@@ -41,27 +39,73 @@
         border-radius: 5px;
         cursor: pointer;
       }
-
+    
       button:hover {
         background-color: #0056b3;
       }
-
+    
       .short-url {
         margin-top: 20px;
       }
+    
+      table {
+        margin: 20px auto; /* Center the table horizontally */
+        border-collapse: collapse; /* Collapse border spacing */
+        width: 80%; /* Adjust the width of the table */
+      }
+    
+      th, td {
+        border: 1px solid #ddd; /* Add border to table cells */
+        padding: 8px; /* Add padding to table cells */
+        text-align: left; /* Align text to the left within cells */
+      }
+    
+      th {
+        background-color: #f2f2f2; /* Add background color to table headers */
+        color: #333; /* Change text color of table headers */
+      }
+    
+      tr:nth-child(even) {
+        background-color: #f2f2f2; /* Add background color to even rows */
+      }
     </style>
+    
   </head>
   <body>
     <div class="container">
       <form method="POST" action="/url">
         <h1>URL Shortener</h1>
-        <% if (local.id) {
-        <!-- Here local means the data that is comnig from backend is stored in locals-->
-        <p>URl Generated : https://localhost/url/<%= id ></p>
-        } %>
+        <% if (locals.id) { %>
+        <p><b>URL Generated: http://localhost:8001/url/<%= id %></b></p>
+        <% } %>
         <input type="text" name="url" placeholder="Enter URL" />
         <button type="submit">Shorten</button>
       </form>
+    </div>
+
+    <div>
+      <% if (locals.urls) { %>
+      <table>
+        <thead>
+          <tr>
+            <th>S. No.</th>
+            <th>Short Id</th>
+            <th>Redirect</th>
+            <th>Click</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% urls.forEach((url, index) => { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= url.shortId %></td>
+            <td><%= url.redirectURL %></a></td>
+            <td><%= url.visitHistory.length %></td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+      <% } %>
     </div>
   </body>
 </html>

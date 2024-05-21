@@ -14,7 +14,7 @@ connectToMongoDB("mongodb://127.0.0.1:27017/short-url").then(() => {
 
 // ========== set the view Engine =========================
 app.set("view engine", "ejs");
-app.set("views", path.resolve("./views"));
+app.set("views", path.resolve("./view"));
 
 // =========== usign the middleware =======================
 app.use(express.json()); // for json data
