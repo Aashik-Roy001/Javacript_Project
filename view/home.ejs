@@ -5,75 +5,123 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>URL Shortener</title>
     <style>
-      body {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f5f5f5;
-    margin: 0;
-    padding: 0;
-   background-color: #dfe2f7;;
+  body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0px;
+  padding: 0px;
+  background-image: url("https://c4.wallpaperflare.com/wallpaper/694/838/505/abstract-design-technology-business-wallpaper-preview.jpg");
+  background-size: cover; /* Adjust as needed */
+  background-position: center; /* Adjust as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #fff; /* Default text color */
 }
 
-      .container {
-        text-align: center;
-        margin-top: 20px; /* Add margin to separate the form and the table */
-      }
-    
-      h1 {
-        color: #333;
-      }
-    
-      input[type="text"] {
-        width: 300px;
-        padding: 10px;
-        margin: 10px auto; /* Center the text field horizontally */
-        display: block; /* Ensure the text field is displayed as a block element */
-        border: 1px solid #ccc;
-        border-radius: 5px;
-      }
-    
-      button {
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-    
-      button:hover {
-        background-color: #0056b3;
-      }
-    
-      .short-url {
-        margin-top: 20px;
-      }
-    
-      table {
-        margin: 20px auto; /* Center the table horizontally */
-        border-collapse: collapse; /* Collapse border spacing */
-        width: 80%; /* Adjust the width of the table */
-      }
-    
-      th, td {
-        border: 1px solid #ddd; /* Add border to table cells */
-        padding: 8px; /* Add padding to table cells */
-        text-align: left; /* Align text to the left within cells */
-      }
-    
-      th {
-        background-color: #f2f2f2; /* Add background color to table headers */
-        color: #333; /* Change text color of table headers */
-      }
-    
-      tr:nth-child(even) {
-        background-color: #f2f2f2; /* Add background color to even rows */
-      }
+
+.main-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 9999; /* Ensure it's on top of other elements */
+}
+
+.container {
+  text-align: center;
+  padding: 50px;
+
+  
+}
+
+.container h1 {
+  color: #02eee2;
+  margin-top: 0;
+  font-size: 36px; 
+  
+}
+
+input[type="text"] {
+  width: 400px;
+  padding: 15px; /* Increase padding for text inputs */
+  margin: 10px auto; /* Center the text field horizontally */
+  display: block; /* Ensure the text field is displayed as a block element */
+  border: 2px solid #02eee2; /* Add thicker border */
+  border-radius: 25px; /* Increase border radius for smoother appearance */
+  background-color:rgba(54, 54, 54, 0.9);; /* Semi-transparent background */
+  color:#ffffff; /* Text color */
+}
+
+button {
+  padding: 15px 30px; /* Increase padding for button */
+  background-color: #03b3aa; /* Match header color */
+  color: #fff;
+  border: none;
+  margin-top: 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth hover transition */
+}
+
+button:hover {
+  background-color: #19191a; /* Darker shade on hover */
+}
+
+.table-container {
+  margin-top: 10px;
+}
+
+table {
+  margin: 20px -25% auto;
+  border-collapse: separate; 
+  border-spacing: 0;
+  width: 150%;
+  max-width: 1000px; 
+  background-color: rgba(54, 54, 54, 0.9); 
+  border-radius: 15px; 
+  overflow: hidden; 
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); 
+  margin-top: 0px;
+  
+}
+
+
+th, td {
+  padding: 10px; /* Increase padding for cells */
+  text-align: center;
+}
+
+th {
+  background-color: #1f1f1f;/* Header background color */
+}
+
+tr:nth-child() {
+  background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background for even rows */
+}
+
+tr:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* Lighter background on hover */
+}
+
     </style>
     
   </head>
-  <body>
-
-    <!-- EJS will render the data on the server then will give the result from that output on the html page-->
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>URL Shortener</title>
+  <style>
+    /* Your CSS styles here */
+  </style>
+</head>
+<body>
+  <div class="main-container">
     <div class="container">
       <form method="POST" action="/url">
         <h1>URL Shortener</h1>
@@ -81,11 +129,11 @@
         <p><b>URL Generated: http://localhost:8001/url/<%= id %></b></p>
         <% } %>
         <input type="text" name="url" placeholder="Enter URL" />
-        <button type="submit">Shorten</button>
+        <button type="submit"><b>Shorten</b></button>
       </form>
     </div>
 
-    <div>
+    <div class="table-container">
       <% if (locals.urls) { %>
       <table>
         <thead>
@@ -109,5 +157,6 @@
       </table>
       <% } %>
     </div>
-  </body>
+  </div>
+</body>
 </html>
