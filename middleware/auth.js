@@ -34,6 +34,9 @@ const { getUser } = require("../Service/auth");
 // above code is not clean and good code for authorization so we have written the clean code for Authorization of the user
 //========================================================================================================
 
+// Authentication :
+//==================
+
 function checkForAuthentication(req, res, next) {
   const tokenCookie = req.cookies?.token;
   req.user = null;
@@ -47,6 +50,9 @@ function checkForAuthentication(req, res, next) {
   req.user = user;
   return next();
 }
+
+// Authorization :
+//=================
 
 function restrictTo(roles = []) {
   return function (req, res, next) {
