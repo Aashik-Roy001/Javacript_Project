@@ -1,29 +1,68 @@
 const { getUser } = require("../Service/auth");
 
-async function restrictedToLoginUserOnly(req, res, next) {
-  const userId = req.cookies?.uid; // we also hve to install cookie-parser to parse the cookies
+// async function restrictedToLoginUserOnly(req, res, next) {
+//   // const userId = req.cookies?.uid; // we also hve to install cookie-parser to parse the cookies
 
-  if (!userId) {
-    return res.redirect("/login");
+//   const userId = req.headers["authorization"];
+
+//   if (!userId) {
+//     return res.redirect("/login");
+//   }
+//   const token = userId.split("Bearer ")[1]; // Bearer 23udhskXkmdkekejfjd
+//   const user = getUser(token);
+//   if (!user) {
+//     return res.redirect("/login");
+//   }
+//   req.user = user;
+//   next();
+// }
+
+// async function checkAuth(req, res, next) {
+//   // const userId = req.cookies?.uid; // we also hve to install cookie-parser to parse the cookies
+//   const userId = req.headers["authorization"];
+//   const token = userId.split("Bearer ")[1]; // Bearer 23udhskXkmdkekejfjd
+//   const user = getUser(token);
+//   req.user = user;
+//   next();
+// }
+
+// module.exports = {
+//   restrictedToLoginUserOnly,
+//   checkAuth,
+// };
+
+// above code is not clean and good code for authorization so we have written the clean code for Authorization of the user
+//========================================================================================================
+
+function checkForAuthentication(req, res, next) {
+  const tokenCookie = req.cookies?.token;
+  req.user = null;
+  if (!tokenCookie) {
+    return next();
   }
-  const user = getUser(userId);
-  if (!user) {
-    return res.redirect("/login");
-  }
+
+  const token = tokenCookie;
+  const user = getUser(token);
+
   req.user = user;
-  next();
+  return next();
 }
 
-async function checkAuth(req, res, next) {
-  const userId = req.cookies?.uid; // we also hve to install cookie-parser to parse the cookies
-  const user = getUser(userId);
-  req.user = user;
-  next();
+function restrictTo(roles = []) {
+  return function (req, res, next) {
+    if (!req.user) {
+      return res.redirect("/login");
+    }
+    if (!roles.includes(req.user.role)) {
+      return res.end("Unauthorized");
+    }
+    return next();
+  };
 }
 
 module.exports = {
-  restrictedToLoginUserOnly,
-  checkAuth,
+  checkForAuthentication,
+  restrictTo,
 };
 
 // The Problem with statefull atuhentication is that :- (Born of Stateless Authentication)

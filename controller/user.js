@@ -15,21 +15,23 @@ async function handleUserSignup(req, res) {
 
 async function handleUserLogin(req, res) {
   const { email, password } = req.body;
-  const userAuth = await User.findOne({ email, password });
+  const user = await User.findOne({ email, password });
 
-  if (!userAuth) {
+  if (!user) {
     return res.render("login", { error: "Invalid Username or Password" });
   }
 
   // now we do'nt need below lines :
   //===============================
   // const sessionId = uuidv4();
-  // setUser(sessionId, userAuth);
+  // setUser(sessionId, user);
   // res.cookie("uid", sessionId);
 
-  const token = setUser(userAuth);
-  res.cookie("uid", token);
+  const token = setUser(user);
+  res.cookie("token", token);
   return res.redirect("/");
+
+  // return res.json({ token });
 }
 
 module.exports = { handleUserSignup, handleUserLogin };

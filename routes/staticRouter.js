@@ -1,13 +1,18 @@
 const express = require("express");
 const URL = require("../model/url");
+const { restrictTo } = require("../middleware/auth");
 const router = express.Router();
 
 // =============== these will render the EJS file ========================
 
-router.get("/", async (req, res) => {
-  if (!req.user) {
-    return res.redirect("/login");
-  }
+router.get("/", restrictTo(["NORMAL"]), async (req, res) => {
+  // restrictTo here act as inline Middleware
+
+  // Now we do not need below lines as we have alredy do this in the middleware Authorization
+  // if (!req.user) {
+  //   return res.redirect("/login");
+  // }
+
   const allUrls = await URL.find({ createdBy: req.user._id });
   return res.render("home", { urls: allUrls });
 });
